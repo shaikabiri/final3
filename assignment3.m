@@ -22,6 +22,7 @@ function[] = assignment3()
     
     
     %Are the predictors correlated?
+    figure;
     h = heatmap(corrcoef(xTrain));
     h.GridVisible = 'off';
     %Some degree of correlation betwen adjacent and ends of the spectra
@@ -39,13 +40,13 @@ function[] = assignment3()
     outidxY = isoutlier(yTrain,"quartiles",1);
     xTrainWOO= xTrain(~max(outidxY,[],2),:);
     yTrainWOO= yTrain(~max(outidxY,[],2),:);
-       
     %calculate PCs for X
     [xCoeff,xScore,xLatent,~,xExplained] = pca(xTrain,"Centered",true);
 
     %plot the variance explained by each PC
     f=figure('Renderer', 'painters', 'Position', [10 10 500 500]);
     bar(xExplained);
+    sum(xExplained(1:5))
     xlabel('PC #')
     ylabel('% Variance explained')
     fontname(f,"Times New Roman");
@@ -111,7 +112,6 @@ function[] = assignment3()
     yTrain = Set2.cal_Y;
     xTest = Set2.pred_X;
     yTest = Set2.pred_Y;
-    
     %Convert the responses to binary
     yTest = yTest - 1;
     yTrain = yTrain - 1;
@@ -127,10 +127,10 @@ function[] = assignment3()
     outidxX = isoutlier(xTrain,"quartiles",1);
     xTrainWOO= xTrain(~max(outidxX,[],2),:);
     yTrainWOO= yTrain(~max(outidxX,[],2),:);
-       
+    size(yTrainWOO)
     %PCA of the xCal
     [xCoeff,xScore,xLatent,~,xExplained] = pca(xTrain,"Centered",true);
-
+    sum(xExplained(1:5))
     %plot the variance explained by each PC
     f=figure('Renderer', 'painters', 'Position', [10 10 500 500]);
     bar(xExplained);
@@ -196,7 +196,7 @@ function[] = assignment3()
     %save the results
     writetable(res,'res2.csv','WriteRowNames',true);
 end
-
+%% Auxilary functions to the main function
 %this function calculates model metrics for predicted and actual ys of a
 %regression
 function [RMSE,R2,bias] = model_metrics(yPred,yAct)
